@@ -1,0 +1,42 @@
+name: Korean localization preview
+
+on:
+  push:
+    branches: [korean-localization]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: korean-preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Archive audited source
+        run: git archive --format=zip --output=coloros-mod-source.zip HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coloros-mod-source
+          path: coloros-mod-source.zip
+          retention-days: 7
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build preview APK
+        run: ./gradlew :app:assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coloros-mod-ko-preview
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 7
