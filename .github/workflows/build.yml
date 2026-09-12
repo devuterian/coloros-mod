@@ -1,141 +1,115 @@
-name: Build & Release
+name: Korean APK build and release
 
 on:
   push:
-    branches: [ master ]
+    branches: [master, korean-localization]
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: korean-apk-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 40
     steps:
-      - name: Checkout (with tags)
+      - name: Checkout exact source
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          fetch-tags: true
+
+      - name: Materialize reviewed Korean source on the localization branch
+        if: github.ref == 'refs/heads/korean-localization'
+        run: |
+          python3 tools/localize_ko.py --apply
+          git add app
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email 'github-actions[bot]@users.noreply.github.com'
+            git commit -m 'feat: apply complete reviewed Korean UI translation'
+            git push origin HEAD:korean-localization
+          fi
+
+      - name: Audit translation and unchanged hook logic
+        run: |
+          python3 tools/localize_ko.py --check --report verification/localization-audit.json
+          python3 tools/test_localize_ko.py
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
+          distribution: temurin
           java-version: '21'
-          distribution: 'temurin'
+      - uses: gradle/actions/setup-gradle@v4
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      # 计算下一个版本号：无 tag 则从 1.0.0 开始，否则对最新 tag 做 patch +1
-      - name: Compute next version
-        id: version
-        run: |
-          LATEST=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          if [ -z "$LATEST" ]; then
-            VERSION="1.0.0"
-          else
-            IFS='.' read -r MAJOR MINOR PATCH <<< "${LATEST#v}"
-            PATCH=$((PATCH + 1))
-            VERSION="${MAJOR}.${MINOR}.${PATCH}"
-          fi
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "previous_tag=$LATEST" >> "$GITHUB_OUTPUT"
-          echo "Next version: $VERSION (from $LATEST)"
-
-      # 同步写入 app/build.gradle 的 versionCode / versionName
-      - name: Bump version in app/build.gradle
-        run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
-          VERSION_CODE=$((MAJOR * 10000 + MINOR * 100 + PATCH))
-          perl -0pi -e "s/versionCode \d+/versionCode $VERSION_CODE/; s/versionName '[0-9.]+'/versionName '$VERSION'/" app/build.gradle
-          grep -E "versionCode|versionName" app/build.gradle
-
-      - name: Build debug APK
+      - name: Build installable debug APK
         run: ./gradlew :app:assembleDebug
 
-      - name: Commit version bump
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add app/build.gradle
-          git commit -m "chore: bump version to ${{ steps.version.outputs.version }}" || echo "no changes"
-          git push
+      - name: Verify APK and public signing certificate
+        run: python3 tools/verify_apk.py app/build/outputs/apk/debug/app-debug.apk
 
-      - name: Create tag
+      - name: Prepare release assets
+        id: version
         run: |
-          git tag "v${{ steps.version.outputs.version }}"
-          git push origin "v${{ steps.version.outputs.version }}"
+          VERSION=$(python3 -c 'import json; print(json.load(open("localization/ko.json"))["version_name"])')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          mkdir -p dist
+          cp app/build/outputs/apk/debug/app-debug.apk "dist/ColorOS-Mod-${VERSION}-debug.apk"
+          cp verification/localization-audit.json verification/apk-report.json verification/apk-manifest.txt verification/signature.txt dist/
+          git archive --format=zip --output="dist/ColorOS-Mod-${VERSION}-source.zip" HEAD
 
-      - name: Generate release changelog
-        id: changelog
-        env:
-          PREVIOUS_TAG: ${{ steps.version.outputs.previous_tag }}
+      - name: Enable KVM for read-only UI verification
+        if: github.ref == 'refs/heads/master'
         run: |
-          if [ -n "$PREVIOUS_TAG" ]; then
-            RANGE="${PREVIOUS_TAG}..HEAD"
-          else
-            RANGE="HEAD"
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Verify Korean screens in light and dark mode
+        if: github.ref == 'refs/heads/master'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -prop persist.sys.locale=ko-KR
+          disable-animations: true
+          script: |
+            adb install -r app/build/outputs/apk/debug/app-debug.apk
+            python3 tools/smoke_ui.py
+
+      - name: Package verification evidence and checksums
+        run: |
+          if [ -d verification/ui ]; then
+            (cd verification && zip -qr ../dist/ui-verification.zip ui)
           fi
-          {
-            echo 'body<<CHANGELOG_EOF'
-            git log "$RANGE" --pretty=format:'- %s (%h)' \
-              --invert-grep --grep='^chore: bump version to '
-            echo
-            echo 'CHANGELOG_EOF'
-          } >> "$GITHUB_OUTPUT"
+          (cd dist && sha256sum *.apk *.zip *.json *.txt > SHA256SUMS.txt)
 
-      - name: Upload APK artifact
+      - name: Upload build and verification artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: coloros-mod-debug
-          path: app/build/outputs/apk/debug/*.apk
+          name: coloros-mod-ko-${{ github.run_id }}
+          path: |
+            dist/*
+            verification/*
+          if-no-files-found: warn
+          retention-days: 14
 
-      - name: Create GitHub Release
+      - name: Publish Korean test release in this fork only
+        if: github.ref == 'refs/heads/master'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version }}
-          name: v${{ steps.version.outputs.version }}
-          body: ${{ steps.changelog.outputs.body }}
-          files: app/build/outputs/apk/debug/*.apk
-
-      # 同步 README 与 release 到 Xposed-Modules-Repo 镜像仓库
-      - name: Sync to Xposed-Modules-Repo
-        env:
-          TOKEN: ${{ secrets.XPOSED_REPO_TOKEN }}
-          TARGET: Xposed-Modules-Repo/com.rikumi.colorosmod
-          VERSION: ${{ steps.version.outputs.version }}
-        run: |
-          if [ -z "$TOKEN" ]; then
-            echo "XPOSED_REPO_TOKEN 未配置，跳过同步"
-            exit 0
-          fi
-          git clone "https://x-access-token:${TOKEN}@github.com/${TARGET}.git" /tmp/xposed-repo
-          cp README.md /tmp/xposed-repo/README.md
-          cd /tmp/xposed-repo
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          if git diff --cached --quiet; then
-            echo "README 无变化"
-          else
-            git commit -m "docs: sync README for v${VERSION}"
-            git push
-          fi
-          git tag "v${VERSION}" || true
-          git push origin "v${VERSION}"
-
-      - name: Upload release to Xposed-Modules-Repo
-        if: ${{ env.XPOSED_REPO_TOKEN != '' }}
-        uses: softprops/action-gh-release@v2
-        env:
-          XPOSED_REPO_TOKEN: ${{ secrets.XPOSED_REPO_TOKEN }}
-        with:
-          repository: Xposed-Modules-Repo/com.rikumi.colorosmod
-          token: ${{ secrets.XPOSED_REPO_TOKEN }}
-          tag_name: v${{ steps.version.outputs.version }}
-          name: v${{ steps.version.outputs.version }}
-          body: ${{ steps.changelog.outputs.body }}
-          files: app/build/outputs/apk/debug/*.apk
+          target_commitish: ${{ github.sha }}
+          name: ColorOS Mod ${{ steps.version.outputs.version }} 한국어
+          body_path: docs/RELEASE-ko.md
+          prerelease: true
+          make_latest: false
+          fail_on_unmatched_files: true
+          files: dist/*
