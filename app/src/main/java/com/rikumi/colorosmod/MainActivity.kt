@@ -157,108 +157,108 @@ internal data class SelectItem(
 ) : SettingsItem
 
 private val DESKTOP: List<SettingsItem> = listOf(
-    GroupTitleItem("桌面布局"),
-    SwitchItem("icon_gap_enabled", "增加图标与名称间距", sliderKey = "icon_gap_dp", sliderMax = 8, sliderDefault = 4),
-    SwitchItem("drawer_columns_enabled", "强制抽屉每行图标数量（实验性）", sliderKey = "drawer_columns", sliderMax = 6, sliderDefault = 5, sliderMin = 4),
-    SwitchItem("drawer_letter_scroll_enabled", "字母索引滚动定位", "点右侧字母条滚动到对应位置，而不是弹出图标"),
-    SwitchItem("indicator_enabled", "减小页面与 Dock 间距", sliderKey = "indicator_dp", sliderMax = 32, sliderDefault = 16, sliderUnit = "dp"),
-    SwitchItem("edit_mode_bg_transparent_enabled", "取消编辑模式背景遮罩"),
-    GroupTitleItem("长按菜单"),
-    SwitchItem("shrink_popup_menu", "缩小图标长按菜单", sliderKey = "popup_scale_percent", sliderMax = 20, sliderDefault = 10, sliderUnit = "%"),
-    SwitchItem("popup_dynamic_blur_enabled", "长按菜单背景动态模糊"),
-    SwitchItem("desktop_popup_bg_brightness_enabled", "自定义长按菜单背景亮度", sliderKey = "desktop_popup_bg_brightness", sliderMax = 10, sliderDefault = 0, sliderUnit = ""),
-    GroupTitleItem("文件夹"),
-    SwitchItem("folder_bg_transparent_enabled", "文件夹展开背景透明"),
-    SwitchItem("folder_anim_duration_enabled", "调整文件夹动画持续时间", sliderKey = "folder_anim_duration_ms", sliderMax = 500, sliderDefault = 300, sliderUnit = "ms", sliderMin = 100),
+    GroupTitleItem("홈 화면 배치"),
+    SwitchItem("icon_gap_enabled", "아이콘과 이름 사이 간격 늘리기", sliderKey = "icon_gap_dp", sliderMax = 8, sliderDefault = 4),
+    SwitchItem("drawer_columns_enabled", "앱 서랍의 한 줄당 아이콘 수 지정 (실험적)", sliderKey = "drawer_columns", sliderMax = 6, sliderDefault = 5, sliderMin = 4),
+    SwitchItem("drawer_letter_scroll_enabled", "글자 색인으로 스크롤", "오른쪽 글자 색인을 누르면 아이콘을 띄우는 대신 해당 위치로 스크롤합니다."),
+    SwitchItem("indicator_enabled", "홈 화면과 독 사이 간격 줄이기", sliderKey = "indicator_dp", sliderMax = 32, sliderDefault = 16, sliderUnit = "dp"),
+    SwitchItem("edit_mode_bg_transparent_enabled", "편집 모드의 배경 어둡게 처리 제거"),
+    GroupTitleItem("길게 누르기 메뉴"),
+    SwitchItem("shrink_popup_menu", "아이콘을 길게 눌렀을 때 메뉴 크기 줄이기", sliderKey = "popup_scale_percent", sliderMax = 20, sliderDefault = 10, sliderUnit = "%"),
+    SwitchItem("popup_dynamic_blur_enabled", "길게 누르기 메뉴에 실시간 배경 흐림 적용"),
+    SwitchItem("desktop_popup_bg_brightness_enabled", "길게 누르기 메뉴의 배경 밝기 조절", sliderKey = "desktop_popup_bg_brightness", sliderMax = 10, sliderDefault = 0, sliderUnit = ""),
+    GroupTitleItem("폴더"),
+    SwitchItem("folder_bg_transparent_enabled", "열린 폴더의 배경 투명하게 만들기"),
+    SwitchItem("folder_anim_duration_enabled", "폴더 애니메이션 시간 조절", sliderKey = "folder_anim_duration_ms", sliderMax = 500, sliderDefault = 300, sliderUnit = "ms", sliderMin = 100),
 )
 
 private val QS: List<SettingsItem> = listOf(
-    GroupTitleItem("通控中心通用设置"),
-    SwitchItem("qs_scrim_translucent_enabled", "自定义背景亮度", sliderKey = "qs_scrim_brightness", sliderMax = 20, sliderDefault = 0, sliderUnit = "%"),
-    SwitchItem("qs_blur_radius_enabled", "自定义背景模糊半径", sliderKey = "qs_blur_radius", sliderMax = 80, sliderDefault = 40, sliderUnit = ""),
-    SwitchItem("qs_blur_scale_enabled", "自定义背景缩小幅度", sliderKey = "qs_blur_scale", sliderMax = 100, sliderDefault = 50, sliderUnit = "%"),
-    SwitchItem("qs_carrier_enabled", "去除运营商显示"),
-    SwitchItem("qs_topmargin_enabled", "隐藏顶部状态图标簇"),
-    SwitchItem("qs_panel_switch_no_cut_enabled", "分离版左右平移切换"),
-    GroupTitleItem("控制中心设置"),
-    SwitchItem("qs_tile_name_ellipsis_enabled", "Wi-Fi / 蓝牙名称单行省略"),
-    SwitchItem("qs_normal_corner_radius_enabled", "OxygenOS 恢复正常圆角"),
-    SwitchItem("qs_clock_no_expand_anim_enabled", "合并版时间日期固定单行"),
-    SwitchItem("anc_tile_enabled", "音量条显示切换降噪模式图标"),
+    GroupTitleItem("알림·제어 센터 공통 설정"),
+    SwitchItem("qs_scrim_translucent_enabled", "배경 밝기 조절", sliderKey = "qs_scrim_brightness", sliderMax = 20, sliderDefault = 0, sliderUnit = "%"),
+    SwitchItem("qs_blur_radius_enabled", "배경 흐림 강도 조절", sliderKey = "qs_blur_radius", sliderMax = 80, sliderDefault = 40, sliderUnit = ""),
+    SwitchItem("qs_blur_scale_enabled", "배경 축소 비율 조절", sliderKey = "qs_blur_scale", sliderMax = 100, sliderDefault = 50, sliderUnit = "%"),
+    SwitchItem("qs_carrier_enabled", "통신사 이름 숨기기"),
+    SwitchItem("qs_topmargin_enabled", "상단 상태 아이콘 숨기기"),
+    SwitchItem("qs_panel_switch_no_cut_enabled", "분리형 패널을 좌우 슬라이드로 전환"),
+    GroupTitleItem("제어 센터 설정"),
+    SwitchItem("qs_tile_name_ellipsis_enabled", "Wi-Fi·블루투스 이름을 한 줄로 표시"),
+    SwitchItem("qs_normal_corner_radius_enabled", "OxygenOS의 모서리 곡률을 기본 형태로 복원"),
+    SwitchItem("qs_clock_no_expand_anim_enabled", "통합형 패널의 날짜·시간을 한 줄로 고정"),
+    SwitchItem("anc_tile_enabled", "음량 바에 노이즈 제어 버튼 표시"),
 )
 private val NOTIF: List<SettingsItem> = listOf(
-    GroupTitleItem("通知中心设置"),
-    SwitchItem("notification_swipe_to_dismiss_enabled", "通知左滑直接清除"),
-    SwitchItem("notification_pull_expand_enabled", "通知下滑展开"),
-    SwitchItem("notification_subtitle_enabled", "缩小通知静默区域副标题", sliderKey = "notification_subtitle_sp", sliderMax = 16, sliderDefault = 8, sliderUnit = "sp"),
-    SwitchItem("notification_padding_enabled", "增加通知上下内边距", sliderKey = "notification_padding_dp", sliderMax = 8, sliderDefault = 4),
-    GroupTitleItem("状态栏设置"),
-    SwitchItem("statusbar_lyric_enabled", "状态栏显示歌词", "需播放器支持 MediaSession metadata.lyricInfo ColorOS 歌词能力，暂不支持魅族歌词能力"),
-    SwitchItem("statusbar_lyric_avoid_third_party_enabled", "避让第三方状态栏歌词", "开启后状态栏区域存在悬浮窗时隐藏时钟"),
-    SwitchItem("fluid_cloud_keep_percent_enabled", "流体云出现时不隐藏电量百分比"),
+    GroupTitleItem("알림 센터 설정"),
+    SwitchItem("notification_swipe_to_dismiss_enabled", "알림을 왼쪽으로 밀어 바로 지우기"),
+    SwitchItem("notification_pull_expand_enabled", "알림을 아래로 밀어 펼치기"),
+    SwitchItem("notification_subtitle_enabled", "무음 알림 영역의 제목 글자 크기 줄이기", sliderKey = "notification_subtitle_sp", sliderMax = 16, sliderDefault = 8, sliderUnit = "sp"),
+    SwitchItem("notification_padding_enabled", "알림의 위아래 안쪽 여백 늘리기", sliderKey = "notification_padding_dp", sliderMax = 8, sliderDefault = 4),
+    GroupTitleItem("상태 표시줄 설정"),
+    SwitchItem("statusbar_lyric_enabled", "상태 표시줄에 가사 표시", "플레이어가 ColorOS의 MediaSession metadata.lyricInfo 가사 기능을 지원해야 합니다. Meizu 방식은 아직 지원하지 않습니다."),
+    SwitchItem("statusbar_lyric_avoid_third_party_enabled", "다른 앱의 상태 표시줄 가사와 겹치지 않게 표시", "상태 표시줄 영역에 다른 앱의 오버레이가 있으면 시계를 숨깁니다."),
+    SwitchItem("fluid_cloud_keep_percent_enabled", "플루이드 클라우드 표시 중에도 배터리 잔량 유지"),
 )
 private val HIDDEN: List<SettingsItem> = listOf(
-    GroupTitleItem("隐藏应用逻辑简化"),
-    SwitchItem("recents_show_hidden_enabled", "多任务显示已隐藏应用"),
-    SwitchItem("hide_apps_noverify_enabled", "打开隐藏应用文件夹免验证"),
-    SwitchItem("pinch_out_open_hide_apps_enabled", "桌面双指张开打开隐藏应用"),
-    SwitchItem("hide_apps_title_folder_enabled", "应用隐藏标题显示文件夹名"),
-    GroupTitleItem("特殊应用隐藏"),
-    SwitchItem("hide_contacts_enabled", "彻底隐藏电话本图标"),
-    SwitchItem("hide_gboard_enabled", "彻底隐藏 Gboard 图标"),
-    SwitchItem("hide_ghostlock_enabled", "彻底隐藏 GhostLock 图标", subtitle = "显然已经有 root 的时候不需要再 root"),
+    GroupTitleItem("숨긴 앱 접근 간소화"),
+    SwitchItem("recents_show_hidden_enabled", "최근 앱에 숨긴 앱 표시"),
+    SwitchItem("hide_apps_noverify_enabled", "숨긴 앱 폴더를 인증 없이 열기"),
+    SwitchItem("pinch_out_open_hide_apps_enabled", "홈 화면에서 두 손가락을 벌려 숨긴 앱 열기"),
+    SwitchItem("hide_apps_title_folder_enabled", "숨긴 앱 화면의 제목에 폴더 이름 표시"),
+    GroupTitleItem("특정 앱 아이콘 숨기기"),
+    SwitchItem("hide_contacts_enabled", "연락처 아이콘 완전히 숨기기"),
+    SwitchItem("hide_gboard_enabled", "Gboard 아이콘 완전히 숨기기"),
+    SwitchItem("hide_ghostlock_enabled", "GhostLock 아이콘 완전히 숨기기", subtitle = "이미 루팅된 기기에서 사용하는 기능입니다."),
 )
 
 // 小窗相关设置: 改动需重启 system_server(框架) 才生效(本模块该作用域为 android/system_server)。
 private val FLOATWINDOW: List<SettingsItem> = listOf(
-    GroupTitleItem("小窗行为"),
-    SwitchItem("recents_hide_freeform_enabled", "多任务隐藏小窗应用"),
-    SwitchItem("float_window_edge_hang_enabled", "悬浮小窗贴边挂机"),
-    SwitchItem("float_window_edge_hang_mute_enabled", "小窗贴边挂机静音"),
-    GroupTitleItem("小窗视觉"),
-    SwitchItem("float_window_edge_hang_white_bar_enabled", "小窗贴边显示为白色竖条"),
-    SwitchItem("float_window_landscape_keep_ratio_enabled", "横屏应用小窗保持比例", "横屏应用小窗的宽高比等于屏幕高宽比"),
-    SwitchItem("float_window_edge_size_optimize_enabled", "优化小窗贴边位置及最大尺寸"),
+    GroupTitleItem("플로팅 창 동작"),
+    SwitchItem("recents_hide_freeform_enabled", "최근 앱에서 플로팅 창으로 실행 중인 앱 숨기기"),
+    SwitchItem("float_window_edge_hang_enabled", "플로팅 창을 화면 가장자리에 숨긴 채 실행"),
+    SwitchItem("float_window_edge_hang_mute_enabled", "가장자리에 숨긴 플로팅 창 음소거"),
+    GroupTitleItem("플로팅 창 모양"),
+    SwitchItem("float_window_edge_hang_white_bar_enabled", "가장자리에 숨긴 창을 흰색 세로 막대로 표시"),
+    SwitchItem("float_window_landscape_keep_ratio_enabled", "가로 앱의 플로팅 창 종횡비 유지", "플로팅 창의 가로:세로 비율을 화면의 세로:가로 비율에 맞춥니다."),
+    SwitchItem("float_window_edge_size_optimize_enabled", "플로팅 창의 가장자리 위치와 최대 크기 최적화"),
 )
 
 private val NAV: List<SettingsItem> = listOf(
-    GroupTitleItem("手势行为"),
-    SwitchItem("gesture_bar_height_enabled", "增大底部手势区高度", "缓解屏幕底部圆角区域吃掉应用内容", "gesture_bar_height_dp", 24, 12),
-    SwitchItem("mback_enabled", "启用 mBack", "点击手势条返回，长按回桌面"),
-    SwitchItem("gesture_touch_through_enabled", "避免手势区域点击穿透"),
-    SwitchItem("rotation_button_fixed_position_enabled", "优化屏幕旋转建议按钮位置", "位于建议旋转前后屏幕底边的夹角"),
-    SwitchItem("long_press_timeout_enabled", "修改系统长按超时", sliderKey = "long_press_timeout_ms", sliderMax = 600, sliderDefault = 300, sliderUnit = "ms", sliderMin = 100, sliderStep = 50, rootBacked = true),
-    SwitchItem("animation_duration_scale_enabled", "微调系统动画时长", sliderKey = "animation_duration_scale", sliderMax = 20, sliderDefault = 15, sliderUnit = "倍", sliderDisplayScale = 0.05f, rootBacked = true),
-    GroupTitleItem("手势视觉"),
-    SwitchItem("gesture_bar_width_enabled", "调整手势滑动条宽度", sliderKey = "gesture_bar_width_dp", sliderMax = 120, sliderDefault = 100, sliderUnit = "dp", sliderMin = 80),
-    SwitchItem("gesture_bar_long_press_disable_enabled", "禁止手势条动画效果", "理论可解决 OxygenOS 关不掉助手动画的问题"),
-    GroupTitleItem("多任务切换"),
-    SwitchItem("recents_hide_not_running_enabled", "多任务隐藏未在运行的应用"),
-    SwitchItem("recents_swipe_up_kill_enabled", "多任务上划彻底结束进程", "修改该设置需重启 Zygote 生效"),
-    SwitchItem("recents_swipe_up_kill_subsidiary_enabled", "划掉同应用主任务一并结束附属任务", "如划掉微信将带走所有小程序，否则需手动划掉所有小程序"),
+    GroupTitleItem("제스처 동작"),
+    SwitchItem("gesture_bar_height_enabled", "하단 제스처 영역 높이 늘리기", "화면 아래쪽의 둥근 모서리에 앱 내용이 가리는 현상을 줄입니다.", "gesture_bar_height_dp", 24, 12),
+    SwitchItem("mback_enabled", "mBack 사용", "제스처 바를 누르면 뒤로 가고, 길게 누르면 홈 화면으로 이동합니다."),
+    SwitchItem("gesture_touch_through_enabled", "제스처 영역 아래의 앱이 눌리지 않게 하기"),
+    SwitchItem("rotation_button_fixed_position_enabled", "화면 회전 제안 버튼 위치 조정", "회전 전후 화면의 아래쪽 가장자리가 만나는 모서리에 표시합니다."),
+    SwitchItem("long_press_timeout_enabled", "길게 누르기 인식 시간 조절", sliderKey = "long_press_timeout_ms", sliderMax = 600, sliderDefault = 300, sliderUnit = "ms", sliderMin = 100, sliderStep = 50, rootBacked = true),
+    SwitchItem("animation_duration_scale_enabled", "시스템 애니메이션 배율 미세 조절", sliderKey = "animation_duration_scale", sliderMax = 20, sliderDefault = 15, sliderUnit = "배", sliderDisplayScale = 0.05f, rootBacked = true),
+    GroupTitleItem("제스처 모양"),
+    SwitchItem("gesture_bar_width_enabled", "제스처 바 너비 조절", sliderKey = "gesture_bar_width_dp", sliderMax = 120, sliderDefault = 100, sliderUnit = "dp", sliderMin = 80),
+    SwitchItem("gesture_bar_long_press_disable_enabled", "제스처 바 애니메이션 끄기", "OxygenOS에서 어시스턴트 애니메이션이 꺼지지 않는 문제를 해결할 수 있습니다."),
+    GroupTitleItem("최근 앱 전환"),
+    SwitchItem("recents_hide_not_running_enabled", "최근 앱에서 실행 중이 아닌 앱 숨기기"),
+    SwitchItem("recents_swipe_up_kill_enabled", "최근 앱을 위로 밀면 프로세스까지 종료", "변경 사항을 적용하려면 Zygote를 재시작해야 합니다."),
+    SwitchItem("recents_swipe_up_kill_subsidiary_enabled", "앱을 닫을 때 연결된 작업도 함께 종료", "예를 들어 WeChat을 닫으면 해당 미니 앱도 모두 종료합니다. 끄면 미니 앱을 각각 닫아야 합니다."),
 )
 
 private val LOCKSCREEN: List<SettingsItem> = listOf(
-    GroupTitleItem("锁屏行为"),
-    SwitchItem("unlocked_shutdown_noverify_enabled", "解锁时关机无需校验密码", "仅开启关机校验密码功能时生效"),
-    SwitchItem("keyguard_slide_input_enabled", "密码支持滑动输入"),
-    SwitchItem("keyguard_bouncer_swipe_back_enabled", "密码界面支持侧滑/下滑返回", "解决误触上滑还要再上滑的奇怪交互"),
-    GroupTitleItem("锁屏视觉"),
-    SwitchItem("keyguard_no_light_effect_enabled", "取消密码界面控件光效", "模拟恢复 ColorOS 15 效果"),
-    SwitchItem("keyguard_bouncer_brightness_enabled", "自定义密码界面背景亮度", sliderKey = "keyguard_bouncer_brightness", sliderMax = 5, sliderDefault = 0, sliderUnit = "%"),
-    SwitchItem("keyguard_notification_offset_enabled", "锁屏通知区域下移", sliderKey = "keyguard_notification_offset_dp", sliderMax = 40, sliderDefault = 20),
-    SwitchItem("keyguard_no_charge_anim_enabled", "取消锁屏充电动画"),
+    GroupTitleItem("잠금 화면 동작"),
+    SwitchItem("unlocked_shutdown_noverify_enabled", "잠금 해제 상태에서는 종료 시 비밀번호 확인 생략", "시스템의 전원 종료 시 비밀번호 확인 기능을 켠 경우에만 적용됩니다."),
+    SwitchItem("keyguard_slide_input_enabled", "잠금 비밀번호를 밀어서 입력"),
+    SwitchItem("keyguard_bouncer_swipe_back_enabled", "비밀번호 화면에서 옆이나 아래로 밀어 뒤로 가기", "실수로 비밀번호 화면을 열었을 때 다시 위로 밀지 않고 돌아갈 수 있습니다."),
+    GroupTitleItem("잠금 화면 모양"),
+    SwitchItem("keyguard_no_light_effect_enabled", "비밀번호 입력 화면의 빛 효과 제거", "ColorOS 15와 비슷한 모습으로 되돌립니다."),
+    SwitchItem("keyguard_bouncer_brightness_enabled", "비밀번호 입력 화면의 배경 밝기 조절", sliderKey = "keyguard_bouncer_brightness", sliderMax = 5, sliderDefault = 0, sliderUnit = "%"),
+    SwitchItem("keyguard_notification_offset_enabled", "잠금 화면 알림 위치 내리기", sliderKey = "keyguard_notification_offset_dp", sliderMax = 40, sliderDefault = 20),
+    SwitchItem("keyguard_no_charge_anim_enabled", "잠금 화면의 충전 애니메이션 끄기"),
 )
 
 private val STORAGE: List<SettingsItem> = listOf(
-    GroupTitleItem("不自动创建以下文件夹"),
-    FolderBlockItem("media_folder_block_alarms", "Alarms", "Alarms"),
-    FolderBlockItem("media_folder_block_audiobooks", "Audiobooks", "Audiobooks"),
-    FolderBlockItem("media_folder_block_movies", "Movies", "Movies"),
-    FolderBlockItem("media_folder_block_notifications", "Notifications", "Notifications"),
-    FolderBlockItem("media_folder_block_podcasts", "Podcasts", "Podcasts"),
-    FolderBlockItem("media_folder_block_recordings", "Recordings", "Recordings"),
-    FolderBlockItem("media_folder_block_ringtones", "Ringtones", "Ringtones"),
+    GroupTitleItem("자동 생성을 막을 폴더"),
+    FolderBlockItem("media_folder_block_alarms", "알람 (Alarms)", "Alarms"),
+    FolderBlockItem("media_folder_block_audiobooks", "오디오북 (Audiobooks)", "Audiobooks"),
+    FolderBlockItem("media_folder_block_movies", "동영상 (Movies)", "Movies"),
+    FolderBlockItem("media_folder_block_notifications", "알림음 (Notifications)", "Notifications"),
+    FolderBlockItem("media_folder_block_podcasts", "팟캐스트 (Podcasts)", "Podcasts"),
+    FolderBlockItem("media_folder_block_recordings", "녹음 (Recordings)", "Recordings"),
+    FolderBlockItem("media_folder_block_ringtones", "벨소리 (Ringtones)", "Ringtones"),
 )
 
 // 首页的一个分类入口: id 用于页面栈定位, title 为首页/子页面标题, icon 取 miuix 扩展图标。
@@ -275,19 +275,19 @@ private data class Category(
 // 首页分组: 每组一张卡片。锁屏紧随通知中心, 其余三个另开一组。
 private val CATEGORY_GROUPS: List<List<Category>> = listOf(
     listOf(
-        Category("desktop", "桌面", MiuixIcons.GridView, DESKTOP),
-        Category("quick_settings", "控制中心", MiuixIcons.Tune, QS),
-        Category("notification", "通知中心与状态栏", MiuixIcons.Community, NOTIF),
-        Category("lockscreen", "锁屏", MiuixIcons.Lock, LOCKSCREEN),
+        Category("desktop", "홈 화면", MiuixIcons.GridView, DESKTOP),
+        Category("quick_settings", "제어 센터", MiuixIcons.Tune, QS),
+        Category("notification", "알림 센터·상태 표시줄", MiuixIcons.Community, NOTIF),
+        Category("lockscreen", "잠금 화면", MiuixIcons.Lock, LOCKSCREEN),
     ),
     listOf(
-        Category("hidden_apps", "隐藏应用", MiuixIcons.Hide, HIDDEN),
-        Category("float_window", "应用小窗", MiuixIcons.Copy, FLOATWINDOW, hint = "更改小窗设置需重启 Zygote 生效"),
-        Category("navigation", "导航与手势", MiuixIcons.Backup, NAV),
+        Category("hidden_apps", "숨긴 앱", MiuixIcons.Hide, HIDDEN),
+        Category("float_window", "플로팅 창", MiuixIcons.Copy, FLOATWINDOW, hint = "플로팅 창 설정을 적용하려면 Zygote를 재시작해야 합니다."),
+        Category("navigation", "내비게이션·제스처", MiuixIcons.Backup, NAV),
     ),
     listOf(
-        Category("storage", "存储管理", MiuixIcons.Folder, STORAGE),
-        Category(DISABLED_APPS_ID, "停用应用", MiuixIcons.Blocklist, emptyList()),
+        Category("storage", "저장 공간 관리", MiuixIcons.Folder, STORAGE),
+        Category(DISABLED_APPS_ID, "사용 중지된 앱", MiuixIcons.Blocklist, emptyList()),
     ),
 )
 private val CATEGORIES = CATEGORY_GROUPS.flatten()
@@ -345,15 +345,15 @@ private fun List<SettingsItem>.splitByDivider(): List<SwitchGroup> {
 }
 
 // 主开关标题: 未启用时是引导点击的"一键启用"; 启用后首页为"启用模块", 子页面为"启用功能"。
-private const val MASTER_TITLE_OFF = "一键启用"
-private const val HOME_MASTER_TITLE_ON = "启用模块"
-private const val CATEGORY_MASTER_TITLE_ON = "启用功能"
+private const val MASTER_TITLE_OFF = "모두 켜기"
+private const val HOME_MASTER_TITLE_ON = "모듈 사용"
+private const val CATEGORY_MASTER_TITLE_ON = "기능 사용"
 
 // 首页主开关副标题(针对全部功能)。
-private const val HOME_MASTER_HINT = "信任开发者启用全部，请注意隐藏应用的设置"
+private const val HOME_MASTER_HINT = "모든 기능을 한 번에 켭니다. 숨긴 앱 관련 설정도 바뀌므로 주의하세요."
 
 // 子页面设置组(第二个 group)的 header: 说明滑块两端值的含义。
-private const val SLIDER_GROUP_HINT = "滑块最左/最右为系统值，中间通常为推荐值"
+private const val SLIDER_GROUP_HINT = "슬라이더의 양 끝 중 한쪽은 시스템 기본값이며, 가운데는 대체로 권장값입니다."
 
 // 主开关"启用模块"切换动画的时长(ms): 先更新 UI 播放动画, 动画结束后才落盘设置。
 private const val MASTER_TOGGLE_ANIM_MS = 350L
@@ -483,7 +483,7 @@ private fun HomeScreen(
     Scaffold(
         topBar = {
             CouixLargeTitle(
-                title = "ColorOS Mod",
+                title = "ColorOS Mod 한국어",
                 dividerProgress = couixTopBarDividerProgress(listState, overscrollOffset),
                 actions = { RestartMenu(ctx) },
             )
@@ -581,7 +581,7 @@ private fun CategoryScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = MiuixIcons.Back,
-                            contentDescription = "返回",
+                            contentDescription = "뒤로",
                             tint = MiuixTheme.colorScheme.onSurface,
                             modifier = Modifier.size(COUIX_BACK_ICON),
                         )
@@ -667,8 +667,8 @@ private fun HideLauncherIconRow(ctx: Context) {
             hidden = it
             setLauncherIconHidden(ctx, it)
         },
-        title = "隐藏模块桌面图标",
-        subtitle = "需在 LSPosed 中关闭强制显示模块图标",
+        title = "홈 화면에서 모듈 아이콘 숨기기",
+        subtitle = "LSPosed의 ‘모듈 아이콘 강제 표시’를 꺼야 합니다.",
     )
 }
 
@@ -732,7 +732,7 @@ private fun systemLabel(): String? {
 // OxygenOS 本身就只有海外版(一加国内版刷的是 ColorOS), 再标 EX 是废话, 故返回 null 省略。
 private fun regionLabel(name: String): String? {
     if (name == "OxygenOS") return null
-    return if (isCnRegion()) "CN" else "EX"
+    return if (isCnRegion()) "중국판" else "글로벌판"
 }
 
 /**
@@ -745,9 +745,9 @@ private fun LaunchAppsRows(ctx: Context) {
     val scope = rememberCoroutineScope()
     CouixItemDivider()
     CouixActionPairRow(
-        leftTitle = "启动 KernelSU",
+        leftTitle = "KernelSU 열기",
         onLeftClick = { scope.launch(Dispatchers.IO) { launchApp(ctx, KERNELSU_LAUNCH) } },
-        rightTitle = "启动 LSPosed",
+        rightTitle = "LSPosed 열기",
         onRightClick = { scope.launch(Dispatchers.IO) { launchApp(ctx, lsposedLaunchCmd()) } },
     )
 }
@@ -770,7 +770,7 @@ private fun launchApp(ctx: Context, command: String) {
     if (runRoot(command) == null) {
         // Toast 需回主线程: 本函数在 IO 线程被调用。
         Handler(ctx.mainLooper).post {
-            android.widget.Toast.makeText(ctx, "未授予 root 权限", android.widget.Toast.LENGTH_SHORT).show()
+            android.widget.Toast.makeText(ctx, "루트 권한이 없습니다. 루트 관리자에서 권한을 허용해 주세요.", android.widget.Toast.LENGTH_SHORT).show()
         }
     }
 }
@@ -782,12 +782,12 @@ internal fun RestartMenu(ctx: Context) {
         icon = {
             Icon(
                 painter = rememberVectorPainter(MiuixIcons.Refresh),
-                contentDescription = "重启",
+                contentDescription = "재시작",
             )
         },
         items = listOf(
-            ActionMenuItem("重启作用域", { restartScope(ctx) }),
-            ActionMenuItem("重启 Zygote", { softRebootSystem(ctx) }),
+            ActionMenuItem("적용 대상 앱 재시작", { restartScope(ctx) }),
+            ActionMenuItem("Zygote 재시작", { softRebootSystem(ctx) }),
         ),
     )
 }
@@ -940,7 +940,7 @@ private fun restartScope(ctx: Context) {
             p.waitFor()
         }
     }.onFailure {
-        android.widget.Toast.makeText(ctx, "未授予 root 权限", android.widget.Toast.LENGTH_SHORT).show()
+        android.widget.Toast.makeText(ctx, "루트 권한이 없습니다. 루트 관리자에서 권한을 허용해 주세요.", android.widget.Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -956,7 +956,7 @@ private fun softRebootSystem(ctx: Context) {
             p.waitFor()
         }
     }.onFailure {
-        android.widget.Toast.makeText(ctx, "未授予 root 权限", android.widget.Toast.LENGTH_SHORT).show()
+        android.widget.Toast.makeText(ctx, "루트 권한이 없습니다. 루트 관리자에서 권한을 허용해 주세요.", android.widget.Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -1045,7 +1045,7 @@ private fun checkEnvironment(activity: MainActivity) {
             if (enabled == false) {
                 android.widget.Toast.makeText(
                     activity,
-                    "请在 LSPosed 中启用模块",
+                    "LSPosed에서 이 모듈을 활성화해 주세요.",
                     android.widget.Toast.LENGTH_LONG
                 ).show()
             }

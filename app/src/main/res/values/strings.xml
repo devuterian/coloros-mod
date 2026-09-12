@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ColorOS Mod</string>
-    <string name="xposed_description">一个针对 ColorOS 的全方位体验增强模块，永久免费\n禁止分享、转载、盗卖以及其他违规用途\n开发者：rikumi</string>
+    <string name="app_name">ColorOS Mod 한국어</string>
+    <string name="xposed_description">ColorOS의 다양한 기능과 화면을 개선하는 무료 모듈입니다.\n무단 공유·재게시·재판매 및 기타 부적절한 사용을 금합니다.\n원 개발자: rikumi · 한국어판: devuterian</string>
 </resources>
