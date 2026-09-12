@@ -51,9 +51,9 @@ import com.rikumi.colorosmod.XposedInit.KEY_HIDE_DISABLED_APPS_ENABLED
 
 // 页面顶部说明: 本页不提供直接停用的入口, 只做只读展示与脚本导出。
 private const val DISABLED_APPS_HINT =
-    "为防止误操作损害设备，我们不提供直接停用应用功能；这里列出了已通过其它途径停用和用户级卸载的应用列表，可在右上角导出成脚本方便重复执行。请注意：\n" +
-    "1. 取决于停用应用的途径，导出的脚本仍然可能需要 adb root；\n" +
-    "2. 模块获取的信息可能并不准确，因此脚本可能会导致系统崩溃或不稳定。请始终在无数据的全新系统上执行脚本。"
+    "잘못된 조작으로 기기에 문제가 생기지 않도록, 이 화면에서는 앱을 직접 사용 중지할 수 없습니다. 다른 방법으로 사용 중지했거나 현재 사용자에서만 제거한 앱을 보여 줍니다. 오른쪽 위에서 같은 작업을 다시 실행할 수 있는 스크립트로 내보낼 수 있습니다. 다음 사항에 주의하세요.\n" +
+    "1. 앱을 사용 중지한 방법에 따라 내보낸 스크립트를 실행할 때 adb root가 필요할 수 있습니다.\n" +
+    "2. 모듈이 읽어 온 정보가 부정확할 수 있습니다. 스크립트를 실행하면 시스템이 비정상 종료되거나 불안정해질 수 있으므로, 중요한 데이터가 없는 초기화된 테스트 기기에서만 실행하세요."
 
 // 说明段落之间的额外间距: 段内靠行距, 段间再拉开一点以区分段落。
 private val HINT_PARAGRAPH_GAP = 2.dp
@@ -129,11 +129,11 @@ private fun buildExportScript(apps: List<DisabledAppEntry>): String {
     val disabled = apps.filter { !it.uninstalled }
     val uninstalled = apps.filter { it.uninstalled }
     if (disabled.isNotEmpty()) {
-        sb.append("\n# 停用\n")
+        sb.append("\n# 앱 사용 중지\n")
         disabled.forEach { sb.append("adb shell pm disable-user --user 0 ").append(it.pkg).append('\n') }
     }
     if (uninstalled.isNotEmpty()) {
-        sb.append("\n# 用户级卸载\n")
+        sb.append("\n# 현재 사용자에서 앱 제거 (데이터 유지)\n")
         uninstalled.forEach { sb.append("adb shell pm uninstall -k --user 0 ").append(it.pkg).append('\n') }
     }
     return sb.toString()
@@ -150,7 +150,7 @@ internal fun DisabledAppsScreen(ctx: Context, onBack: () -> Unit) {
     LaunchedEffect(Unit) {
         val result = withContext(Dispatchers.IO) { listDisabledApps(ctx) }
         if (result == null) {
-            android.widget.Toast.makeText(ctx, "未授予 root 权限", android.widget.Toast.LENGTH_SHORT).show()
+            android.widget.Toast.makeText(ctx, "루트 권한이 없습니다. 루트 관리자에서 권한을 허용해 주세요.", android.widget.Toast.LENGTH_SHORT).show()
         }
         apps = result.orEmpty()
     }
@@ -169,7 +169,7 @@ internal fun DisabledAppsScreen(ctx: Context, onBack: () -> Unit) {
                 withContext(Dispatchers.Main) {
                     android.widget.Toast.makeText(
                         ctx,
-                        if (ok) "已导出" else "导出失败",
+                        if (ok) "내보냈습니다." else "내보내지 못했습니다.",
                         android.widget.Toast.LENGTH_SHORT,
                     ).show()
                 }
@@ -179,13 +179,13 @@ internal fun DisabledAppsScreen(ctx: Context, onBack: () -> Unit) {
     Scaffold(
         topBar = {
             CouixTopAppBar(
-                title = "停用应用",
+                title = "사용 중지된 앱",
                 dividerProgress = couixTopBarDividerProgress(listState, overscrollOffset),
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = MiuixIcons.Back,
-                            contentDescription = "返回",
+                            contentDescription = "뒤로",
                             tint = MiuixTheme.colorScheme.onSurface,
                             modifier = Modifier.size(COUIX_BACK_ICON),
                         )
@@ -194,14 +194,14 @@ internal fun DisabledAppsScreen(ctx: Context, onBack: () -> Unit) {
                 actions = {
                     IconButton(onClick = {
                         if (apps.isNullOrEmpty()) {
-                            android.widget.Toast.makeText(ctx, "暂无可导出的应用", android.widget.Toast.LENGTH_SHORT).show()
+                            android.widget.Toast.makeText(ctx, "내보낼 앱이 없습니다.", android.widget.Toast.LENGTH_SHORT).show()
                         } else {
                             exportLauncher.launch("disabled_apps.sh")
                         }
                     }) {
                         Icon(
                             imageVector = MiuixIcons.Share,
-                            contentDescription = "导出",
+                            contentDescription = "내보내기",
                             tint = MiuixTheme.colorScheme.onSurface,
                         )
                     }
@@ -219,7 +219,7 @@ internal fun DisabledAppsScreen(ctx: Context, onBack: () -> Unit) {
         ) {
             // 第一个 group: 功能说明, 标题 + subtitle 形式(行内边距与设置项一致)。
             item { CouixCard { DisabledAppsHintRow() } }
-            item { CouixSmallTitle(text = "停用应用设置") }
+            item { CouixSmallTitle(text = "앱 사용 중지 설정") }
             item {
                 CouixCard {
                     DisableAppsNoVerifyRow(ctx)
@@ -227,11 +227,11 @@ internal fun DisabledAppsScreen(ctx: Context, onBack: () -> Unit) {
                     HideDisabledAppsRow(ctx)
                 }
             }
-            item { CouixSmallTitle(text = "已停用的应用") }
+            item { CouixSmallTitle(text = "사용 중지된 앱 목록") }
             val current = apps
             when {
-                current == null -> item { CouixSmallTitle(text = "加载中…") }
-                current.isEmpty() -> item { CouixSmallTitle(text = "无已停用或用户级卸载的应用") }
+                current == null -> item { CouixSmallTitle(text = "불러오는 중…") }
+                current.isEmpty() -> item { CouixSmallTitle(text = "사용 중지되었거나 현재 사용자에서 제거된 앱이 없습니다.") }
                 // 每行一个独立的惰性 item: 行数上百时不能共用一个容器(见 CouixCardRow 注释)。
                 else -> itemsIndexed(current, key = { _, entry -> entry.pkg }) { index, entry ->
                     CouixCardRow(first = index == 0, last = index == current.lastIndex) {
@@ -257,7 +257,7 @@ private fun DisableAppsNoVerifyRow(ctx: Context) {
             checked = it
             setBool(ctx, KEY_DISABLE_APPS_NOVERIFY_ENABLED, it)
         },
-        title = "停用应用无需输入密码",
+        title = "앱 사용 중지 시 비밀번호 확인 생략",
     )
 }
 
@@ -273,7 +273,7 @@ private fun HideDisabledAppsRow(ctx: Context) {
             checked = it
             setBool(ctx, KEY_HIDE_DISABLED_APPS_ENABLED, it)
         },
-        title = "在应用管理中隐藏",
+        title = "앱 관리에서 사용 중지된 앱 숨기기",
     )
 }
 
@@ -286,7 +286,7 @@ private fun DisabledAppsHintRow() {
             .padding(horizontal = 16.dp, vertical = 13.dp),
     ) {
         BasicText(
-            text = "功能说明",
+            text = "사용 안내",
             style = MiuixTheme.textStyles.body1.copy(
                 color = MiuixTheme.colorScheme.onSurface,
             ),
@@ -319,7 +319,7 @@ private fun openAppDetails(ctx: Context, pkg: String) {
             Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$pkg"))
         )
     } catch (_: ActivityNotFoundException) {
-        android.widget.Toast.makeText(ctx, "无法打开该应用的设置页", android.widget.Toast.LENGTH_SHORT)
+        android.widget.Toast.makeText(ctx, "이 앱의 설정 화면을 열 수 없습니다.", android.widget.Toast.LENGTH_SHORT)
             .show()
     }
 }
@@ -355,7 +355,7 @@ private fun DisabledAppRow(entry: DisabledAppEntry, onClick: () -> Unit) {
             }
         }
         BasicText(
-            text = if (entry.uninstalled) "用户级卸载" else "停用",
+            text = if (entry.uninstalled) "사용자에서 제거" else "사용 중지",
             style = MiuixTheme.textStyles.body2.copy(color = summary),
             modifier = Modifier.padding(start = 12.dp),
         )

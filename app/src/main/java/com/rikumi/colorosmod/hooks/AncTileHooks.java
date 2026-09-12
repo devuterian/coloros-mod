@@ -1007,23 +1007,23 @@ public final class AncTileHooks {
         if (st == null || stage < 0 || stage > 2) return null;
         int type = typeOfSlot(STAGE_TO_SLOT[stage], st.supports);
         String label = labelForType(type);
-        return label == null ? null : "已切换到" + label + "模式";
+        return label == null ? null : "" + label + " 모드로 전환했습니다.";
     }
 
     private static String labelForType(int type) {
         switch (type) {
             case 1:
-                return "关闭";
+                return "끄기";
             case 2:
-                return "通透";
+                return "주변 소리 듣기";
             case 3:
-                return "轻度降噪";
+                return "약한 노이즈 캔슬링";
             case 4:
-                return "深度降噪";
+                return "강한 노이즈 캔슬링";
             case 5:
-                return "降噪";
+                return "노이즈 캔슬링";
             case 10:
-                return "自适应";
+                return "적응형 노이즈 캔슬링";
             default:
                 return null;
         }

@@ -1624,8 +1624,8 @@ fun CouixConfirmDialog(
     text: String,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
-    confirmLabel: String = "确定",
-    dismissLabel: String = "取消",
+    confirmLabel: String = "확인",
+    dismissLabel: String = "취소",
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Card(

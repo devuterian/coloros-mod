@@ -655,7 +655,7 @@ public final class SystemServerHooks {
             Collections.synchronizedMap(new HashMap<Integer, WeakReference<Object>>());
 
     // 贴边挂机中弹出的提示文案。
-    private static final String EDGE_HANG_TOAST_TEXT = "贴边挂机中";
+    private static final String EDGE_HANG_TOAST_TEXT = "화면 가장자리에서 계속 실행 중";
     // prepareSurfaces 的 before/after 之间传递 Task.mLastSurfaceShowing 的附加字段键。
     private static final String LAST_SHOWING = "colorosModLastSurfaceShowing";
     private static volatile Object sPamExt;           // PlaybackActivityMonitorExtImpl 实例

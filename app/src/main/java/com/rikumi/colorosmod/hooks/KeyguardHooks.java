@@ -167,7 +167,7 @@ public final class KeyguardHooks {
     private static final String CLS_MSG_AREA_CONTROLLER =
             "com.android.keyguard.KeyguardMessageAreaController";
 
-    private static final String BOUNCER_SWIPE_BACK_HINT = "下滑返回指纹解锁";
+    private static final String BOUNCER_SWIPE_BACK_HINT = "아래로 밀어 지문 잠금 해제로 돌아가기";
 
     /** SYSUI_STATE_STATUS_BAR_KEYGUARD_SHOWING(1<<6): 置位时侧滑被判定为 "back gesture disabled by sysui flags"。 */
     private static final long SYSUI_STATE_STATUS_BAR_KEYGUARD_SHOWING = 1L << 6;
